@@ -1,15 +1,14 @@
-import { NextApiHandler } from "next";
-import { users } from "../../../mock/users-mock";
+import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import { User } from "../../../@types/types";
+import api from "../../../services/api";
 
-type User = {
-  name: string;
-  age: number;
-};
-
-type UserResponse = User | Error;
-
-const handler: NextApiHandler<UserResponse> = (req, res) => {
+const handler: NextApiHandler<User> = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   const { id } = req.query;
+
+  const users: User[] = await api.getAllUser();
 
   const user = users.find((user) => id === user.id.toString());
 

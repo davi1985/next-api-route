@@ -1,20 +1,27 @@
-import { NextApiHandler } from "next";
-import { users } from "../../../mock/users-mock";
+import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import { User } from "../../../@types/types";
+import api from "../../../services/api";
 
-type User = {
-  name: string;
-  age: number;
-};
+const handlerGet: NextApiHandler<User[]> = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
+  const users = await api.getAllUser();
 
-const handlerGet: NextApiHandler<User[]> = (req, res) => {
   if (req.method === "GET") return res.json(users);
 };
 
-const handlerPost: NextApiHandler<User> = (req, res) => {
+const handlerPost: NextApiHandler<User> = (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   if (req.method === "POST") return res.json({ name: "Fulano", age: 22 });
 };
 
-const handler: NextApiHandler<User[] | User> = (req, res) => {
+const handler: NextApiHandler<User> = (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   switch (req.method) {
     case "GET":
       handlerGet(req, res);
